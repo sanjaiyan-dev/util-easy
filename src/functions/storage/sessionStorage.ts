@@ -1,5 +1,5 @@
-import { lowPriority } from "../../utils";
-import { addTwoStrings } from "../../utils/helpers";
+import { lowPriority } from "../scheduler";
+import { addTwoStrings } from "../../utils";
 import type {
   handleStorage_getPropertyParams,
   handleStorage_setPropertyParams,

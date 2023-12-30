@@ -1,3 +1,3 @@
-import { lowPriority, lowPriorityWithTimeout } from "./low-priority";
+import { addTwoStrings } from "./helpers";
 
-export { lowPriority, lowPriorityWithTimeout };
+export { addTwoStrings };

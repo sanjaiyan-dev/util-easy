@@ -1,30 +1,28 @@
-import { lowPriority } from "../../utils";
+import { lowPriority } from "../scheduler";
 import type { MemoizeParams } from "./types";
 
-const memoize = <T extends (...args: any[]) => any>({
+const memoize = <T extends (...args: Parameters<T>) => ReturnType<T>>({
   callback,
   optimistic = true,
-}: MemoizeParams<T>): T => {
+}: MemoizeParams<T>) => {
   const cache = new Map<string, ReturnType<T>>();
 
-  return ((...args: Parameters<T>) => {
-    const key = JSON.stringify(args);
+  return (...args: Parameters<T>) => {
+    const cacheKey = JSON.stringify(args);
 
-    if (cache.has(key)) {
+    if (cache.has(cacheKey)) {
       if (optimistic) {
         lowPriority(() => {
-          cache.set(key, callback(...args));
+          cache.set(cacheKey, callback(...args));
         });
+        return cache.get(cacheKey);
       }
-      return cache.get(key);
     } else {
       const result = callback(...args);
-      cache.set(key, result);
+      cache.set(cacheKey, result);
       return result;
     }
-
-    return callback(...args);
-  }) as T;
+  };
 };
 
 export { memoize };
