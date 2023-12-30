@@ -1,6 +1,6 @@
 # Util-Easy
 
-A versatile and easy-to-use utility package for handling local storage, session storage, and memoization in your JavaScript or TypeScript projects.
+A comprehensive and user-friendly utility package designed for efficient handling of local storage, session storage, and memoization in your JavaScript or TypeScript projects.
 
 ## Installation
 
@@ -73,6 +73,25 @@ const memoizedFunction = memoize({
 // Now use memoizedFunction instead of expensiveFunction for optimized performance
 ```
 
+### Low Priority Tasks
+
+```javascript
+import { lowPriority, lowPriorityWithTimeout } from 'util-easy';
+
+// Run a low-priority task
+lowPriority(() => {
+  // Your low-priority task
+});
+
+// Run a low-priority task with a timeout
+lowPriorityWithTimeout({
+  callback: () => {
+    // Your low-priority task
+  },
+  timeout: 1000, // Timeout in milliseconds
+});
+```
+
 ## API
 
 ### `handleLocalStorage(id?: string)`
@@ -98,9 +117,22 @@ Returns a memoized version of the provided function.
 - `callback`: The function to be memoized.
 - `optimistic`: Set to `true` for optimistic memoization and `false` for pessimistic memoization.
 
+### `lowPriority(callback: IdleRequestCallback): void`
+
+Runs a low-priority task using either `requestIdleCallback` or `queueMicrotask`.
+
+### `lowPriorityWithTimeout({ callback, timeout }: LowPriorityWithTimeoutParams): void`
+
+Runs a low-priority task with a timeout.
+
+- `callback`: The function to be executed.
+- `timeout`: Timeout in milliseconds.
+
 ## Note: Early Development Stage
 
-This package is currently in a very early stage of development. Contributions and feedback are welcome! Feel free to contribute to the project on [GitHub](https://github.com/sanjaiyan-dev/easy-util) or reach out on [Instagram](https://www.instagram.com/sanjaiyan_dev/) for any inquiries or collaborations.
+The `util-easy` package is currently in a very early stage of development, with much more to come. Both session storage and local storage create a copy in the cache for even faster access. The memoize function runs tasks in the background without blocking to update the cache if the optimistic parameter is set to true.
+
+Feel free to contribute to the project on [GitHub](https://github.com/sanjaiyan-dev/easy-util) or reach out on [Instagram](https://www.instagram.com/sanjaiyan_dev/) for any inquiries or collaborations.
 
 ## License
 
