@@ -1,5 +1,12 @@
 # util-easy
 
+## 0.1.1
+
+### Patch Changes
+
+- - Ensured result is returned even when the `optimistic` parameter is set to false.
+  - Improved package documentation for better clarity and understanding.
+
 ## 0.1.0
 
 ### Minor Changes

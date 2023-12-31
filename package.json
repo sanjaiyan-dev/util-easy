@@ -1,10 +1,10 @@
 {
   "name": "util-easy",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Simplify your code! A collection of lightweight JavaScript utilities for effortless coding. Boost your productivity with ease.",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sanjaiyan-dev/easy-util.git"
+    "url": "git+https://github.com/sanjaiyan-dev/util-easy.git"
   },
   "main": "dist/index.js",
   "module": "dist/index.mjs",
