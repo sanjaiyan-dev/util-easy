@@ -15,8 +15,8 @@ const memoize = <T extends (...args: Parameters<T>) => ReturnType<T>>({
         lowPriority(() => {
           cache.set(cacheKey, callback(...args));
         });
-        return cache.get(cacheKey);
       }
+      return cache.get(cacheKey);
     } else {
       const result = callback(...args);
       cache.set(cacheKey, result);
