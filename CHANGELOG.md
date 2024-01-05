@@ -1,5 +1,12 @@
 # util-easy
 
+## 0.2.0
+
+### Minor Changes
+
+- - Introducing `memoizeAsync` function for efficient asynchronous memoization.
+  - Resolved critical bugs impacting package stability and performance.
+
 ## 0.1.1
 
 ### Patch Changes

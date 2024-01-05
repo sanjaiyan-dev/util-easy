@@ -1,4 +1,4 @@
 export interface LowPriorityWithTimeoutParams {
-  callback: IdleRequestCallback;
-  timeout: number;
+  readonly callback: IdleRequestCallback;
+  readonly timeout: number;
 }

@@ -1,2 +1,2 @@
-import { memoize } from "./memo";
-export { memoize };
+import { memoize, memoizeAsync } from "./memo";
+export { memoize, memoizeAsync };

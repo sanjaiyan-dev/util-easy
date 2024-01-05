@@ -1,6 +1,6 @@
 # Util-Easy
 
-A comprehensive and user-friendly utility package designed for efficient handling of local storage, session storage, and memoization in your JavaScript or TypeScript projects.
+A comprehensive and user-friendly utility package, `util-easy`, is designed to handle local storage, session storage, and memoization in JavaScript or TypeScript projects. As this package is in a very early stage of development, many exciting features are yet to come.
 
 ## Installation
 
@@ -57,33 +57,40 @@ sessionStorageHandler.clearAll();
 ### Memoization
 
 ```javascript
-import { memoize } from 'util-easy';
+import { memoize, memoizeAsync } from 'util-easy';
 
 const expensiveFunction = (param1, param2) => {
   // Expensive computation here
   return result;
 };
 
-// Memoize the function
+// Synchronous Memoization
 const memoizedFunction = memoize({
   callback: expensiveFunction,
   optimistic: true, // Set to false for pessimistic memoization
 });
 
-// Now use memoizedFunction instead of expensiveFunction for optimized performance
+// Asynchronous Memoization
+const memoizedAsyncFunction = memoizeAsync({
+  callback: asyncFunction,
+  optimistic: true, // Set to false for pessimistic memoization
+  maxRetry: 3, // Maximum number of retries for async memoization
+});
+
+// Now use memoizedFunction and memoizedAsyncFunction for optimized performance
 ```
 
-### Low Priority Tasks
+### Low Priority Task Scheduling
 
 ```javascript
 import { lowPriority, lowPriorityWithTimeout } from 'util-easy';
 
-// Run a low-priority task
+// Execute low-priority task
 lowPriority(() => {
   // Your low-priority task
 });
 
-// Run a low-priority task with a timeout
+// Execute low-priority task with timeout
 lowPriorityWithTimeout({
   callback: () => {
     // Your low-priority task
@@ -112,25 +119,30 @@ Returns an object with the following methods:
 
 ### `memoize<T extends Function>({ callback, optimistic }: MemoizeParams<T>)`
 
-Returns a memoized version of the provided function.
+Returns a memoized version of the provided synchronous function.
 
-- `callback`: The function to be memoized.
+- `callback`: The synchronous function to be memoized.
 - `optimistic`: Set to `true` for optimistic memoization and `false` for pessimistic memoization.
 
-### `lowPriority(callback: IdleRequestCallback): void`
+### `memoizeAsync<T extends Function>({ callback, optimistic, maxRetry }: MemoizedAsyncParams<T>)`
 
-Runs a low-priority task using either `requestIdleCallback` or `queueMicrotask`.
+Returns a memoized version of the provided asynchronous function.
 
-### `lowPriorityWithTimeout({ callback, timeout }: LowPriorityWithTimeoutParams): void`
+- `callback`: The asynchronous function to be memoized.
+- `optimistic`: Set to `true` for optimistic memoization and `false` for pessimistic memoization.
+- `maxRetry`: Maximum number of retries for async memoization.
 
-Runs a low-priority task with a timeout.
+### `lowPriority(callback: IdleRequestCallback)`
 
-- `callback`: The function to be executed.
-- `timeout`: Timeout in milliseconds.
+Executes a low-priority task using either `requestIdleCallback` or `queueMicrotask`, depending on browser support.
+
+### `lowPriorityWithTimeout({ callback, timeout }: LowPriorityWithTimeoutParams)`
+
+Executes a low-priority task with a specified timeout using either `requestIdleCallback` or `queueMicrotask`, depending on browser support.
 
 ## Note: Early Development Stage
 
-The `util-easy` package is currently in a very early stage of development, with much more to come. Both session storage and local storage create a copy in the cache for even faster access. The memoize function runs tasks in the background without blocking to update the cache if the optimistic parameter is set to true.
+This package is currently in a very early stage of development. More features are planned, and your contributions and feedback are welcome! Session storage and local storage create a copy in cache for even faster access. The memoize function will run tasks in the background without blocking to update the cache if the optimistic parameter is set to true.
 
 Feel free to contribute to the project on [GitHub](https://github.com/sanjaiyan-dev/easy-util) or reach out on [Instagram](https://www.instagram.com/sanjaiyan_dev/) for any inquiries or collaborations.
 
