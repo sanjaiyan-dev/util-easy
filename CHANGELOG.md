@@ -1,5 +1,12 @@
 # util-easy
 
+## 0.2.1
+
+### Patch Changes
+
+- - Added remove property function in storage handling.
+  - Added `unstable_cacheFunction` for caching function results in browser storage.
+
 ## 0.2.0
 
 ### Minor Changes

@@ -1,151 +1,122 @@
 # Util-Easy
 
-A comprehensive and user-friendly utility package, `util-easy`, is designed to handle local storage, session storage, and memoization in JavaScript or TypeScript projects. As this package is in a very early stage of development, many exciting features are yet to come.
+Welcome to Util-Easy! This package provides easy-to-use utilities for managing browser storage and optimizing function performance. It's currently in the early stages of development, with many more features planned in the pipeline.
 
 ## Installation
+
+You can install Util-Easy via npm:
 
 ```bash
 npm install util-easy
 ```
 
-## Usage
+## Features
 
-### Local Storage
+### Browser Storage Management
 
-```javascript
+Util-Easy offers simple interfaces to handle browser storage efficiently. It provides functions for setting, getting, and clearing properties in both local and session storage.
+
+#### Local Storage
+
+```typescript
 import { handleLocalStorage } from 'util-easy';
 
+// Initialize local storage handler
 const localStorageHandler = handleLocalStorage();
 
-// Set property
-localStorageHandler.setProperty({
-  key: 'exampleKey',
-  item: 'exampleValue',
-});
+// Set an item in local storage
+localStorageHandler.setProperty({ key: 'user', item: { name: 'John' } });
 
-// Get property
-const retrievedValue = localStorageHandler.getProperty({
-  key: 'exampleKey',
-});
+// Get an item from local storage
+const user = localStorageHandler.getProperty<{ name: string }>({ key: 'user' });
+console.log(user); // { name: 'John' }
 
-// Clear all
-localStorageHandler.clearAll();
+// Clear an item from local storage
+const result = localStorageHandler.clearProperty<{ name: string }>({ key: 'user' });
+console.log(result.success); // true
 ```
 
-### Session Storage
+#### Session Storage
 
-```javascript
+```typescript
 import { handleSessionStorage } from 'util-easy';
 
+// Initialize session storage handler
 const sessionStorageHandler = handleSessionStorage();
 
-// Set property
-sessionStorageHandler.setProperty({
-  key: 'exampleKey',
-  item: 'exampleValue',
-});
+// Set an item in session storage
+sessionStorageHandler.setProperty({ key: 'token', item: 'abc123' });
 
-// Get property
-const retrievedValue = sessionStorageHandler.getProperty({
-  key: 'exampleKey',
-});
+// Get an item from session storage
+const token = sessionStorageHandler.getProperty<string>({ key: 'token' });
+console.log(token); // abc123
 
-// Clear all
-sessionStorageHandler.clearAll();
+// Clear an item from session storage
+const result = sessionStorageHandler.clearProperty<string>({ key: 'token' });
+console.log(result.success); // true
 ```
 
-### Memoization
+### Function Memoization
 
-```javascript
+Util-Easy includes memoization utilities to optimize function performance, particularly for asynchronous tasks.
+
+```typescript
 import { memoize, memoizeAsync } from 'util-easy';
 
-const expensiveFunction = (param1, param2) => {
-  // Expensive computation here
-  return result;
+// Synchronous function memoization
+const add = (a: number, b: number) => a + b;
+const memoizedAdd = memoize({ callback: add });
+
+console.log(memoizedAdd(2, 3)); // Output: 5 (function called)
+console.log(memoizedAdd(2, 3)); // Output: 5 (cached result)
+
+// Asynchronous function memoization
+const asyncTask = async (value: number) => {
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    return value * 2;
 };
+const memoizedAsyncTask = memoizeAsync({ callback: asyncTask });
 
-// Synchronous Memoization
-const memoizedFunction = memoize({
-  callback: expensiveFunction,
-  optimistic: true, // Set to false for pessimistic memoization
-});
-
-// Asynchronous Memoization
-const memoizedAsyncFunction = memoizeAsync({
-  callback: asyncFunction,
-  optimistic: true, // Set to false for pessimistic memoization
-  maxRetry: 3, // Maximum number of retries for async memoization
-});
-
-// Now use memoizedFunction and memoizedAsyncFunction for optimized performance
+memoizedAsyncTask(5).then(result => console.log(result)); // Output: 10 (function called)
+memoizedAsyncTask(5).then(result => console.log(result)); // Output: 10 (cached result)
 ```
 
-### Low Priority Task Scheduling
+### Cache Optimization
 
-```javascript
+```typescript
+import { unstable_cacheFunctionBrowser } from 'util-easy';
+
+// Cache function results in local storage
+const cachedFunction = unstable_cacheFunctionBrowser({
+    callback: (a: number, b: number) => a + b,
+    cacheType: 'localStorage'
+});
+
+console.log(cachedFunction?.(2, 3)); // Output: 5 (function called)
+console.log(cachedFunction?.(2, 3)); // Output: 5 (cached result)
+```
+
+### Low Priority Execution
+
+```typescript
 import { lowPriority, lowPriorityWithTimeout } from 'util-easy';
 
-// Execute low-priority task
-lowPriority(() => {
-  // Your low-priority task
-});
+// Execute a task at low priority
+lowPriority(() => console.log('Executing at low priority'));
 
-// Execute low-priority task with timeout
-lowPriorityWithTimeout({
-  callback: () => {
-    // Your low-priority task
-  },
-  timeout: 1000, // Timeout in milliseconds
+// Execute a task at low priority with a timeout
+lowPriorityWithTimeout({ 
+    callback: () => console.log('Executing at low priority with timeout'),
+    timeout: 1000
 });
 ```
 
-## API
+## Contribution
 
-### `handleLocalStorage(id?: string)`
-
-Returns an object with the following methods:
-
-- `setProperty<T>({ key, item }: handleStorage_setPropertyParams<T>): void`: Sets a property in local storage.
-- `getProperty<ReturnType_1>({ key }: handleStorage_getPropertyParams): ReturnType_1 | null`: Retrieves a property from local storage.
-- `clearAll(): void`: Clears all properties from local storage.
-
-### `handleSessionStorage(id?: string)`
-
-Returns an object with the following methods:
-
-- `setProperty<T>({ key, item }: handleStorage_setPropertyParams<T>): void`: Sets a property in session storage.
-- `getProperty<ReturnType_1>({ key }: handleStorage_getPropertyParams): ReturnType_1 | null`: Retrieves a property from session storage.
-- `clearAll(): void`: Clears all properties from session storage.
-
-### `memoize<T extends Function>({ callback, optimistic }: MemoizeParams<T>)`
-
-Returns a memoized version of the provided synchronous function.
-
-- `callback`: The synchronous function to be memoized.
-- `optimistic`: Set to `true` for optimistic memoization and `false` for pessimistic memoization.
-
-### `memoizeAsync<T extends Function>({ callback, optimistic, maxRetry }: MemoizedAsyncParams<T>)`
-
-Returns a memoized version of the provided asynchronous function.
-
-- `callback`: The asynchronous function to be memoized.
-- `optimistic`: Set to `true` for optimistic memoization and `false` for pessimistic memoization.
-- `maxRetry`: Maximum number of retries for async memoization.
-
-### `lowPriority(callback: IdleRequestCallback)`
-
-Executes a low-priority task using either `requestIdleCallback` or `queueMicrotask`, depending on browser support.
-
-### `lowPriorityWithTimeout({ callback, timeout }: LowPriorityWithTimeoutParams)`
-
-Executes a low-priority task with a specified timeout using either `requestIdleCallback` or `queueMicrotask`, depending on browser support.
-
-## Note: Early Development Stage
-
-This package is currently in a very early stage of development. More features are planned, and your contributions and feedback are welcome! Session storage and local storage create a copy in cache for even faster access. The memoize function will run tasks in the background without blocking to update the cache if the optimistic parameter is set to true.
-
-Feel free to contribute to the project on [GitHub](https://github.com/sanjaiyan-dev/easy-util) or reach out on [Instagram](https://www.instagram.com/sanjaiyan_dev/) for any inquiries or collaborations.
+Contributions are welcome! Feel free to open issues or submit pull requests on [GitHub](https://github.com/yourusername/util-easy).
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+---
