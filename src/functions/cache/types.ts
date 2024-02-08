@@ -11,3 +11,7 @@ export interface MemoizeParams<T> {
 export interface MemoizedAsyncParams<T> extends MemoizeParams<T> {
   readonly maxRetry?: number;
 }
+
+export interface CacheParams<T> extends Omit<MemoizeParams<T>, "optimistic"> {
+  cacheType: "localStorage" | "sessionStorage";
+}

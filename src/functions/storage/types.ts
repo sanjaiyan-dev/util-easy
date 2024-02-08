@@ -6,3 +6,6 @@ export interface handleStorage_setPropertyParams<T> {
 export interface handleStorage_getPropertyParams {
   readonly key: string;
 }
+
+export interface handleStorage_removePropertyParams
+  extends handleStorage_getPropertyParams {}

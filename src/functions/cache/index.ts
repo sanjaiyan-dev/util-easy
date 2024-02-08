@@ -1,2 +1,3 @@
 import { memoize, memoizeAsync } from "./memo";
-export { memoize, memoizeAsync };
+import { unstable_cacheFunctionBrowser } from "./cache";
+export { memoize, memoizeAsync, unstable_cacheFunctionBrowser };

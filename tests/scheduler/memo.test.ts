@@ -76,7 +76,7 @@ describe("Memoize Async Function", () => {
     const expensiveFunction = vi.fn(async () => {
       if (errorCount >= 0) {
         errorCount--;
-        throw new Error("Ooo");
+        throw new Error("Error !!!");
       }
       return 12;
     });

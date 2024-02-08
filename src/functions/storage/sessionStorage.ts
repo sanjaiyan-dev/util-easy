@@ -2,6 +2,7 @@ import { lowPriority } from "../scheduler";
 import { addTwoStrings } from "../../utils";
 import type {
   handleStorage_getPropertyParams,
+  handleStorage_removePropertyParams,
   handleStorage_setPropertyParams,
 } from "./types";
 
@@ -32,6 +33,26 @@ const handleSessionStorage = (id: string = "") => {
     }
   };
 
+  const clearProperty = <ReturnType>({
+    key,
+  }: handleStorage_removePropertyParams) => {
+    const mainKey = addTwoStrings(id, key);
+    const currentPropertyInKey = storage.getItem(mainKey);
+
+    if (currentPropertyInKey === null) {
+      return {
+        success: false,
+        reason: "Unable to find any property with the given key.",
+      };
+    }
+    cache.delete(mainKey);
+    storage.removeItem(mainKey);
+    return {
+      success: true,
+      item: JSON.parse(currentPropertyInKey) as ReturnType,
+    };
+  };
+
   const clearAll = () => {
     storage.clear();
     cache.clear();
@@ -40,6 +61,7 @@ const handleSessionStorage = (id: string = "") => {
   return {
     setProperty,
     getProperty,
+    clearProperty,
     clearAll,
   };
 };

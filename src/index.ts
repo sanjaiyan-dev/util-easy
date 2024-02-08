@@ -2,7 +2,11 @@
 import { handleLocalStorage, handleSessionStorage } from "./functions/storage";
 
 /** Cache & Memoize */
-import { memoize, memoizeAsync } from "./functions/cache";
+import {
+  memoize,
+  memoizeAsync,
+  unstable_cacheFunctionBrowser,
+} from "./functions/cache";
 
 /** Scheduler */
 import { lowPriority, lowPriorityWithTimeout } from "./functions/scheduler";
@@ -12,6 +16,7 @@ export {
   handleSessionStorage,
   memoize,
   memoizeAsync,
+  unstable_cacheFunctionBrowser,
   lowPriority,
   lowPriorityWithTimeout,
 };
